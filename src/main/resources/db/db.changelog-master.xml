@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <include file="db/changelog/000000_initial.xml"/>
+    <include file="db/changelog/05-06-create-app-user-table.xml"/>
+    <include file="db/changelog/05-06-create-request-table.xml"/>
+    <include file="db/changelog/05-06-create-status-history-table.xml"/>
+    <include file="db/changelog/create-default-app-users.xml"/>
+</databaseChangeLog>

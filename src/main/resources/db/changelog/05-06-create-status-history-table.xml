@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1749138523813-4" author="baurzhan">
+        <sql>
+            CREATE TABLE status_history
+            (
+                id                     BIGINT NOT NULL,
+                request_id             BIGINT,
+                changed_by_app_user_id BIGINT,
+                new_status_type        VARCHAR(255),
+                reason                 VARCHAR(255),
+                created_at  TIMESTAMP,
+                    CONSTRAINT pk_status_history PRIMARY KEY (id)
+            );
+
+            ALTER TABLE status_history
+                ADD CONSTRAINT FK_STATUS_HISTORY_ON_CHANGED_BY_APP_USER
+                    FOREIGN KEY (changed_by_app_user_id) REFERENCES app_user (id);
+
+            ALTER TABLE status_history
+                ADD CONSTRAINT FK_STATUS_HISTORY_ON_REQUEST
+                    FOREIGN KEY (request_id) REFERENCES request (id);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1749138430345-3" author="baurzhan">
+        <sql>
+            CREATE TABLE request
+            (
+                id          BIGINT NOT NULL,
+                description VARCHAR(255),
+                status_type VARCHAR(255),
+                app_user_id BIGINT NOT NULL,
+                created_at  TIMESTAMP,
+                CONSTRAINT pk_request PRIMARY KEY (id)
+            );
+
+            ALTER TABLE request
+                ADD CONSTRAINT FK_REQUEST_ON_APP_USER
+                    FOREIGN KEY (app_user_id) REFERENCES app_user (id);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

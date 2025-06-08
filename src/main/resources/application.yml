@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: service-station
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/service-station-db
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.xml
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: service-station
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+server:
+  port: 8070
+
+jwt:
+  secret: MmUwMjcxY2E2MGQ0NDQwMzcwYzY1YjkwMmQzNjg4NWVhZTFhMDljNzkxYTg3MTI5Y2FlMzVkNjAyNzkwMzM5MDhlZmZjZTcyYjFhMjk4ODk0ZTVhMWM2YTQ3MTc3NWFkYWYyNjI5ZWRhY2E2MjJiNTkxNmQwZmVhMWVlYmQ4YmU=
+  expiration: 3600000

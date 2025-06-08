@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1749138270019-2" author="baurzhan">
+        <sql>
+            CREATE TABLE app_user
+            (
+                id       BIGINT       NOT NULL,
+                login    VARCHAR(255),
+                password VARCHAR(255),
+                name     VARCHAR(255),
+                mobile   VARCHAR(255),
+                app_role VARCHAR(255) NOT NULL,
+                created_at  TIMESTAMP,
+                    CONSTRAINT pk_app_user PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
