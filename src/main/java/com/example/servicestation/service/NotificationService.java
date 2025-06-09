@@ -11,5 +11,4 @@ public class NotificationService {
     public void notifyClient(AppUser client, String message) {
         log.info("Sending SMS to {}: {}", client, message);
     }
-
 }

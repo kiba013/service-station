@@ -3,6 +3,8 @@ package com.example.servicestation.controller;
 import com.example.servicestation.domain.enumeration.RequestStatusType;
 import com.example.servicestation.service.RequestService;
 import com.example.servicestation.service.dto.RequestDTO;
+import com.example.servicestation.service.request.RequestStatusUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +23,15 @@ public class RequestController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RequestDTO> createRequest(@RequestBody RequestDTO requestDTO) {
+    public ResponseEntity<RequestDTO> createRequest(@Valid @RequestBody RequestDTO requestDTO) {
         return ResponseEntity.ok(requestService.save(requestDTO));
     }
 
     @PutMapping(value = "/{requestId}/status",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestDTO> updateRequest(@PathVariable Long requestId,
-                                                    @RequestParam RequestStatusType status,
-                                                    @RequestParam String reason) {
-        return ResponseEntity.ok(requestService.update(requestId, status, reason));
+                                                    @RequestBody @Valid RequestStatusUpdateRequest request) {
+        return ResponseEntity.ok(requestService.update(requestId, request));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

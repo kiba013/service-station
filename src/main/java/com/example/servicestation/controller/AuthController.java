@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping(value = "/login",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Validated AuthenticationRequest authRequest) {
+    public ResponseEntity<AuthenticationResponse> sigIn(@RequestBody @Validated AuthenticationRequest authRequest) {
         return ResponseEntity.ok(authenticationService.login(authRequest));
     }
 
@@ -30,7 +30,7 @@ public class AuthController {
     @PostMapping(value = "/register",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppUserDTO> registerAppUser(@RequestBody AppUserDTO dto) {
+    public ResponseEntity<AppUserDTO> signUp(@RequestBody AppUserDTO dto) {
         return ResponseEntity.ok(authenticationService.signUp(dto));
     }
 }

@@ -21,8 +21,6 @@ public class AppUserService {
     private final PasswordEncoder passwordEncoder;
     private final AppUserRepository appUserRepository;
 
-    // TODO add CreatedAt
-
     @Transactional
     public AppUserDTO save(AppUserDTO dto) {
         checkLogin(dto.getLogin());
@@ -47,7 +45,7 @@ public class AppUserService {
 
     private void checkLogin(String login) {
         appUserRepository.findByLogin(login).ifPresent(user -> {
-            throw new IllegalArgumentException("User with login: " + login + " already exists!"); // TODO Exception UsernameAlreadyExists
+            throw new IllegalArgumentException("User with login: " + login + " already exists!");
         });
     }
 }

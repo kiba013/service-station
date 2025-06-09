@@ -2,7 +2,7 @@ package com.example.servicestation.errors;
 
 import com.example.servicestation.domain.enumeration.RequestStatusType;
 
-public class InvalidStatusTransitionException extends RuntimeException{
+public class InvalidStatusTransitionException extends RuntimeException {
 
     public InvalidStatusTransitionException(String message) {
         super(message);

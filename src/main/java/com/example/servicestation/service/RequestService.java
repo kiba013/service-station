@@ -3,6 +3,7 @@ package com.example.servicestation.service;
 import com.example.servicestation.domain.Request;
 import com.example.servicestation.domain.enumeration.RequestStatusType;
 import com.example.servicestation.errors.AccessDeniedException;
+import com.example.servicestation.errors.ObjectNotFoundException;
 import com.example.servicestation.kafka.event.RequestStatusEvent;
 import com.example.servicestation.kafka.producer.KafkaRequestProducer;
 import com.example.servicestation.repository.RequestRepository;
@@ -10,11 +11,11 @@ import com.example.servicestation.service.dto.AppUserDTO;
 import com.example.servicestation.service.dto.RequestDTO;
 import com.example.servicestation.service.dto.StatusHistoryDTO;
 import com.example.servicestation.service.mapper.RequestMapper;
+import com.example.servicestation.service.request.RequestStatusUpdateRequest;
 import com.example.servicestation.service.specification.RequestSpecification;
 import com.example.servicestation.util.StatusTransitionValidator;
 import com.example.servicestation.util.UserUtils;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,7 +33,6 @@ public class RequestService {
     private final UserUtils userUtils;
     private final RequestMapper requestMapper;
     private final RequestRepository requestRepository;
-    private final NotificationService notificationService;
     private final StatusHistoryService statusHistoryService;
     private final KafkaRequestProducer kafkaRequestProducer;
     private final StatusTransitionValidator statusTransitionValidator;
@@ -44,6 +44,7 @@ public class RequestService {
         AppUserDTO currentUser = getCurrentUser();
         dto.setAppUser(currentUser);
         dto.setStatusType(RequestStatusType.NEW);
+        dto.setCreatedAt(ZonedDateTime.now());
 
         Request entity = requestMapper.toEntity(dto);
         entity = requestRepository.save(entity);
@@ -56,25 +57,25 @@ public class RequestService {
                 RequestStatusType.NEW));
 
         log.info("Created request with ID= {} by USER={}", entity.getId(), currentUser.getName());
-        return requestMapperDTO;
 
+        return requestMapperDTO;
     }
 
     @Transactional
-    public RequestDTO update(Long requestId, RequestStatusType statusType, String reason) {
+    public RequestDTO update(Long requestId, RequestStatusUpdateRequest updateRequest) {
         AppUserDTO currentUser = getCurrentUser();
 
         validateUserPermissions(currentUser);
 
         Request request = getRequestById(requestId);
 
-        statusTransitionValidator.validateTransition(request.getStatusType(), statusType);
+        statusTransitionValidator.validateTransition(request.getStatusType(), updateRequest.getStatus());
 
         kafkaRequestProducer.sendStatusChangeEvent(
                 new RequestStatusEvent(
                         requestId,
-                        statusType,
-                        reason,
+                        updateRequest.getStatus(),
+                        updateRequest.getReason(),
                         currentUser
                 )
         );
@@ -87,7 +88,7 @@ public class RequestService {
         log.info("Getting request with ID: {}", id);
         return requestRepository.findById(id)
                 .map(requestMapper::toDTO)
-                .orElseThrow(() -> new EntityNotFoundException("Request not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Request not found with ID: " + id));
     }
 
     @Transactional(readOnly = true)
@@ -104,19 +105,13 @@ public class RequestService {
 
     @Transactional
     public void delete(Long id) {
+        getRequestById(id);
         requestRepository.deleteById(id);
         log.info("Request by ID: {} deleted successfully!", id);
     }
 
     private AppUserDTO getCurrentUser() {
         return userUtils.getCurrentUser();
-    }
-
-    private void notifyClientIfCompleted(RequestStatusType statusType, Request request) {
-        if (statusType == RequestStatusType.DONE) {
-            notificationService.notifyClient(request.getAppUser(),
-                    "Thank you for contacting our the service station, Your car is ready!");
-        }
     }
 
     private StatusHistoryDTO buildStatusHistory(AppUserDTO appUserDTO,
@@ -141,6 +136,6 @@ public class RequestService {
 
     private Request getRequestById(Long id) {
         return requestRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Request not found"));
+                .orElseThrow(() -> new ObjectNotFoundException("Request not found with ID: " + id));
     }
 }
