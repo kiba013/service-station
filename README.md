@@ -71,16 +71,22 @@ Endpoint: PATCH http://localhost:8070/api/requests/{ID}/status
 
 Тело запроса:
 статус из списка: [NEW, ACCEPTED, PROCESSING, REPAIRING, DONE]
-{
-    "status": "Ремонт по кузову",
-    "reason": "комментарий к изменению статуса"
-}
+<br />
+{<br />
+    "status": "NEW",<br />
+    "reason": "комментарий к изменению статуса"<br />
+}<br />
 
 
 ---------------------------------------------
 
 Пример:
-http://localhost:8070/api/requests/1/status?status=ACCEPTED&reason=repair
+http://localhost:8070/api/requests/1/status<br />
+<br />
+{<br />
+    "status": "NEW",<br />
+    "reason": "комментарий к изменению статуса"<br />
+}
 
 ## Права доступа изменения статуса:
 ## Только для ролей MANAGER и ADMIN
