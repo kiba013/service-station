@@ -103,7 +103,8 @@ Endpoint: GET http://localhost:8070/api/requests <br />
 
 Параметры запроса:  <br />
 
-clientId - id клиента
+clientId - id клиента <br />
+ 
 status - статус заявки
 
  <br />
