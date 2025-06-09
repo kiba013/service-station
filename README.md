@@ -4,7 +4,7 @@
 
 ---------------------------------
 
-Соберите проект:
+Соберите проект:<br />
 ./mvnw clean package
 
 -----------------------------
@@ -35,30 +35,30 @@ docker-compose up --build -d
 
 Регистрация нового пользователя
 Отправьте POST-запрос на http://localhost:8070/auth/register с телом:
-
-{
-    "login": "user",
-    "password": "userPassword",
-    "name": "user_nickname",
-    "mobile": "87078085060"
-}
+<br />
+{<br />
+    "login": "user",<br />
+    "password": "userPassword",<br />
+    "name": "user_nickname",<br />
+    "mobile": "87078085060"<br />
+}<br />
 
 
 # Работа с заявками
 
-Получение токена
+Получение токена<br />
 Отправьте POST-запрос на http://localhost:8070/auth/login с credentials пользователя
 
 В ответе получите access_token для авторизации последующих запросов
 
 ## Создание заявки
-Endpoint: POST http://localhost:8070/api/requests
+Endpoint: POST http://localhost:8070/api/requests<br />
 
-Тело запроса:
+Тело запроса:<br />
 
-{
-    "description": "Ремонт по кузову"
-}
+{<br />
+    "description": "Ремонт по кузову"<br />
+}<br />
 
 
 Создает заявку со статусом NEW
@@ -69,7 +69,7 @@ Endpoint: POST http://localhost:8070/api/requests
 
 Endpoint: PATCH http://localhost:8070/api/requests/{ID}/status
 
-Тело запроса:
+Тело запроса:<br />
 статус из списка: [NEW, ACCEPTED, PROCESSING, REPAIRING, DONE]
 <br />
 {<br />
