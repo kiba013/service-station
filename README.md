@@ -94,3 +94,22 @@ http://localhost:8070/api/requests/1/status<br />
 Жизненный цикл заявки
 Заявка проходит через следующие статусы:
 NEW → ACCEPTED → PROCESSING → REPAIRING → DONE
+
+----------------
+
+# Получение списка заявок
+
+Endpoint: GET http://localhost:8070/api/requests <br />
+
+Параметры запроса:  <br />
+
+clientId - id клиента
+status - статус заявки
+
+ <br />
+ Пример запроса:  <br />
+ 
+ http://localhost:8070/api/requests?clientId=3&status=NEW
+
+Если ничего не указать просто получите весь список.
+ 
