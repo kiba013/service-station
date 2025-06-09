@@ -69,11 +69,13 @@ Endpoint: POST http://localhost:8070/api/requests
 
 Endpoint: PATCH http://localhost:8070/api/requests/{ID}/status
 
-Параметры:
+Тело запроса:
+статус из списка: [NEW, ACCEPTED, PROCESSING, REPAIRING, DONE]
+{
+    "status": "Ремонт по кузову",
+    "reason": "комментарий к изменению статуса"
+}
 
-status - новый статус из списка: [NEW, ACCEPTED, PROCESSING, REPAIRING, DONE]
-
-reason - комментарий к изменению статуса
 
 ---------------------------------------------
 
