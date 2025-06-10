@@ -6,11 +6,11 @@ import com.example.servicestation.service.dto.RequestDTO;
 import com.example.servicestation.service.request.RequestStatusUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -34,10 +34,12 @@ public class RequestController {
         return ResponseEntity.ok(requestService.update(requestId, request));
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RequestDTO>> getAllRequests(@RequestParam(required = false) Long clientId,
-                                                           @RequestParam(required = false) RequestStatusType status) {
-        return ResponseEntity.ok(requestService.findAll(clientId, status));
+    @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<RequestDTO>> getRequests(
+            @RequestParam(required = false) Long clientId,
+            @RequestParam(required = false) RequestStatusType statusType,
+            Pageable pageable) {
+        return ResponseEntity.ok(requestService.findAll(clientId, statusType, pageable));
     }
 
     @GetMapping(value = "/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)

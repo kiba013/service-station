@@ -99,7 +99,7 @@ NEW → ACCEPTED → PROCESSING → REPAIRING → DONE
 
 # Получение списка заявок
 
-Endpoint: GET http://localhost:8070/api/requests <br />
+Endpoint: GET http://localhost:8070/api/requests/get-all <br />
 
 Параметры запроса:  <br />
 
@@ -109,8 +109,8 @@ status - статус заявки
 
  <br />
  Пример запроса:  <br />
- 
- http://localhost:8070/api/requests?clientId=3&status=NEW
+
+http://localhost:8070/api/requests/get-all?clientId=5&status=DONE&size=2&page=1
 
 Если ничего не указать просто получите весь список.
  

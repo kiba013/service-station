@@ -18,12 +18,13 @@ import com.example.servicestation.util.UserUtils;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -92,19 +93,25 @@ public class RequestService {
     }
 
     @Transactional(readOnly = true)
-    public List<RequestDTO> findAll(@Nullable Long clientId, @Nullable RequestStatusType statusType) {
+    public Page<RequestDTO> findAll(@Nullable Long clientId, @Nullable RequestStatusType statusType, Pageable pageable) {
+        AppUserDTO currentUser = getCurrentUser();
+        Long specClientId = currentUser.isNotClient() ? clientId : currentUser.getId();
+
         Specification<Request> specification = Specification
-                .where(clientId == null ? null : RequestSpecification.byClient(clientId))
+                .where(specClientId == null ? null : RequestSpecification.byClient(specClientId))
                 .and(statusType == null ? null : RequestSpecification.withStatus(statusType));
-        log.info("Getting Requests with status: {} and by Client ID: {}", statusType, clientId);
-        return requestRepository.findAll(specification)
-                .stream()
-                .map(requestMapper::toDTO)
-                .toList();
+
+        log.info("Getting Requests with status: {} for Client ID: {}",
+                statusType != null ? statusType : "ALL",
+                specClientId != null ? specClientId : "ALL CLIENTS");
+
+        return requestRepository.findAll(specification, pageable)
+                .map(requestMapper::toDTO);
     }
 
     @Transactional
     public void delete(Long id) {
+        validateUserPermissions(getCurrentUser());
         getRequestById(id);
         requestRepository.deleteById(id);
         log.info("Request by ID: {} deleted successfully!", id);
