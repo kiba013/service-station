@@ -14,7 +14,8 @@
                 changed_by_app_user_id BIGINT,
                 new_status_type        VARCHAR(255),
                 reason                 VARCHAR(255),
-                created_at  TIMESTAMP,
+                created_at  TIMESTAMP WITH TIME ZONE,
+                updated_at  TIMESTAMP WITH TIME ZONE,
                     CONSTRAINT pk_status_history PRIMARY KEY (id)
             );
 

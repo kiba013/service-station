@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="0506211000-0" author="admin">
+    <changeSet id="0506211000-0" author="baurzhan">
         <sql>
             INSERT INTO public.app_user (id,
                                          login,

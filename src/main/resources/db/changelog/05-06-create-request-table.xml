@@ -13,7 +13,8 @@
                 description VARCHAR(255),
                 status_type VARCHAR(255),
                 app_user_id BIGINT NOT NULL,
-                created_at  TIMESTAMP,
+                created_at  TIMESTAMP WITH TIME ZONE,
+                updated_at  TIMESTAMP WITH TIME ZONE,
                 CONSTRAINT pk_request PRIMARY KEY (id)
             );
 

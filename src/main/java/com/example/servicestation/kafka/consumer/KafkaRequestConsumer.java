@@ -49,7 +49,6 @@ public class KafkaRequestConsumer {
                         .changedBy(event.getAppUserDTO())
                         .newStatusType(event.getStatusType())
                         .reason(event.getReason())
-                        .createdAt(ZonedDateTime.now())
                         .build()
         );
 

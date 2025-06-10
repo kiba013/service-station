@@ -45,7 +45,6 @@ public class RequestService {
         AppUserDTO currentUser = getCurrentUser();
         dto.setAppUser(currentUser);
         dto.setStatusType(RequestStatusType.NEW);
-        dto.setCreatedAt(ZonedDateTime.now());
 
         Request entity = requestMapper.toEntity(dto);
         entity = requestRepository.save(entity);
@@ -130,7 +129,6 @@ public class RequestService {
                 .changedBy(appUserDTO)
                 .newStatusType(statusType)
                 .reason(reason)
-                .createdAt(ZonedDateTime.now())
                 .build();
     }
 

@@ -15,7 +15,8 @@
                 name     VARCHAR(255),
                 mobile   VARCHAR(255),
                 app_role VARCHAR(255) NOT NULL,
-                created_at  TIMESTAMP,
+                created_at  TIMESTAMP WITH TIME ZONE,
+                updated_at  TIMESTAMP WITH TIME ZONE,
                     CONSTRAINT pk_app_user PRIMARY KEY (id)
             );
         </sql>
