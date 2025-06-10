@@ -23,6 +23,8 @@ public class RequestDTO extends BaseDTO {
 
     private String description;
 
+    private String carModel;
+
     private RequestStatusType statusType;
 
     @ToString.Exclude

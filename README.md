@@ -6,94 +6,93 @@
 
 ---------------------------------
 
-Соберите проект:<br />
-./mvnw clean package
-
------------------------------
-
-Запустите сервис:
+## Запустите сервис:
 
 docker-compose up --build -d
 
 
-## Аутентификация и авторизация
+# Аутентификация и авторизация
 
 Проект использует Spring Security с аутентификацией через JWT (Bearer token).
 
 Предустановленные пользователи
 При запуске автоматически создаются пользователи:
 
-Администратор (ADMIN):
+### Администратор (ADMIN):
 
-Логин: admin
+- Логин: ``admin``
 
-Пароль: adminPassword123!
+- Пароль: ``adminPassword123!``
 
-Менеджер (MANAGER):
+### Менеджер (MANAGER):
 
-Логин: manager
+- Логин: ``manager``
 
-Пароль: adminPassword123!
+- Пароль: ``adminPassword123!``
 
 Регистрация нового пользователя
 Отправьте POST-запрос на http://localhost:8070/auth/register с телом:
-<br />
-{<br />
-    "login": "user",<br />
-    "password": "userPassword",<br />
-    "name": "user_nickname",<br />
-    "mobile": "87078085060"<br />
-}<br />
+
+
+    {
+        "login": "user",
+        "password": "userPassword",
+        "name": "user_nickname",
+        "mobile": "87078085060"
+    }
 
 
 # Работа с заявками
 
-Получение токена<br />
+Получение токена
+
 Отправьте POST-запрос на http://localhost:8070/auth/login с credentials пользователя
 
-В ответе получите access_token для авторизации последующих запросов
+В ответе получите ```access_token``` для авторизации последующих запросов
 
 ## Создание заявки
-Endpoint: POST http://localhost:8070/api/requests<br />
 
-Тело запроса:<br />
+Endpoint: POST http://localhost:8070/api/requests
 
-{<br />
-    "description": "Ремонт по кузову"<br />
-}<br />
+Тело запроса:
+
+    {
+        "description": "Ремонт по кузову"
+    }
 
 
 Создает заявку со статусом NEW
 
 Доступно всем аутентифицированным пользователям
 
-# Изменение статуса заявки
+## Изменение статуса заявки
 
-Endpoint: PATCH http://localhost:8070/api/requests/{ID}/status
+Endpoint: PUT http://localhost:8070/api/requests/{ID}/status
 
-Тело запроса:<br />
-статус из списка: [NEW, ACCEPTED, PROCESSING, REPAIRING, DONE]
-<br />
-{<br />
-    "status": "NEW",<br />
-    "reason": "комментарий к изменению статуса"<br />
-}<br />
+Тело запроса:
+
+статус из списка: [ NEW, ACCEPTED, PROCESSING, REPAIRING, DONE ]
+
+
+    {
+        "status": "NEW",
+        "reason": "комментарий к изменению статуса"
+    }
 
 
 ---------------------------------------------
-
 Пример:
-http://localhost:8070/api/requests/1/status<br />
-<br />
-{<br />
-    "status": "NEW",<br />
-    "reason": "комментарий к изменению статуса"<br />
-}
 
-## Права доступа изменения статуса:
-## Только для ролей MANAGER и ADMIN
+PUT http://localhost:8070/api/requests/1/status
 
-Жизненный цикл заявки
+    {
+        "status": "NEW",
+        "reason": "комментарий к изменению статуса"
+    }
+
+
+### Права доступа изменения статуса только для ролей: MANAGER и ADMIN
+
 Заявка проходит через следующие статусы:
 NEW → ACCEPTED → PROCESSING → REPAIRING → DONE
 
@@ -101,22 +100,47 @@ NEW → ACCEPTED → PROCESSING → REPAIRING → DONE
 
 # Получение списка заявок
 
-Endpoint: GET http://localhost:8070/api/requests/get-all <br />
+Endpoint: GET http://localhost:8070/api/requests/get-all 
 
-Параметры запроса:  <br />
+Параметры запроса:  
 
-clientId - id клиента <br />
+``clientId`` - id клиента 
  
-status - статус заявки
+``status`` - статус заявки
 
- <br />
- Пример запроса:  <br />
+ Пример запроса:  
 
 http://localhost:8070/api/requests/get-all?clientId=5&status=DONE&size=2&page=1
 
 Если ничего не указать просто получите весь список.
  
-## Получить заявку по ID <br />
+## Получить заявку по ID 
 
 Endpoint: GET http://localhost:8070/api/requests/{ID} <br />
-ID - идентификационный номер заявки
+
+``ID`` - идентификационный номер заявки
+
+-------------------------------------------------
+
+# Получение истории заявок
+
+ Endpoint: http://localhost:8070/api/status-history/get-all <br/>
+
+
+Параметры запроса:
+
+``requestId`` - id заявки
+
+``changedById`` - кем изменено
+
+```oldStatus``` - старый статус
+
+``newStatus`` - новый статус
+
+``start`` - дата, начиная с 
+
+``end`` - дата
+
+Пример запроса:  <br />
+
+http://localhost:8070/api/status-history/get-all?requestId=6&oldStatus=NEW&changedById=2&size=10&page=0

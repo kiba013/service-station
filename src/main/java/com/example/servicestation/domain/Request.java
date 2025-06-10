@@ -26,6 +26,8 @@ public class Request extends BaseEntity {
 
     private String description;
 
+    private String carModel;
+
     @Enumerated(EnumType.STRING)
     private RequestStatusType statusType;
 

@@ -15,8 +15,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -39,7 +37,7 @@ public class KafkaRequestConsumer {
                     log.error("Request {} not found in DB", event.getRequestId());
                     return new ObjectNotFoundException("Request not found with ID: " + event.getRequestId());
                 });
-
+        RequestStatusType oldStatus = request.getStatusType();
         request.setStatusType(event.getStatusType());
         requestRepository.save(request);
 
@@ -47,6 +45,7 @@ public class KafkaRequestConsumer {
                 StatusHistoryDTO.builder()
                         .request(requestMapper.toDTO(request))
                         .changedBy(event.getAppUserDTO())
+                        .oldStatusType(oldStatus)
                         .newStatusType(event.getStatusType())
                         .reason(event.getReason())
                         .build()

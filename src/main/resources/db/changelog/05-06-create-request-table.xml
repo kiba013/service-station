@@ -11,6 +11,7 @@
             (
                 id          BIGINT NOT NULL,
                 description VARCHAR(255),
+                car_model   VARCHAR(255),
                 status_type VARCHAR(255),
                 app_user_id BIGINT NOT NULL,
                 created_at  TIMESTAMP WITH TIME ZONE,

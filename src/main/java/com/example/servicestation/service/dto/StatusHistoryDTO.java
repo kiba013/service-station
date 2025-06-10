@@ -29,6 +29,8 @@ public class StatusHistoryDTO extends BaseDTO {
     @EqualsAndHashCode.Exclude
     private AppUserDTO changedBy;
 
+    private RequestStatusType oldStatusType;
+
     private RequestStatusType newStatusType;
 
     private String reason;

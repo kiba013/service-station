@@ -32,6 +32,9 @@ public class StatusHistory extends BaseEntity {
     private AppUser changedBy;
 
     @Enumerated(EnumType.STRING)
+    private RequestStatusType oldStatusType;
+
+    @Enumerated(EnumType.STRING)
     private RequestStatusType newStatusType;
 
     private String reason;

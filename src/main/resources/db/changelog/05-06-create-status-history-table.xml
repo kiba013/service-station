@@ -12,6 +12,7 @@
                 id                     BIGINT NOT NULL,
                 request_id             BIGINT,
                 changed_by_app_user_id BIGINT,
+                old_status_type        VARCHAR(255),
                 new_status_type        VARCHAR(255),
                 reason                 VARCHAR(255),
                 created_at  TIMESTAMP WITH TIME ZONE,
